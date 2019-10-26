@@ -27,7 +27,7 @@ export function toApiBooking(booking: HHH.IHoundBooking): API.IHoundAPIBooking {
     };
 }
 
-export function toApiDog(dog: HHH.IHoundDog): API.IHoundApiDog {
+export function toApiDog(dog: HHH.IHoundDog): API.IHoundAPIDog {
     return {
         bookings: dog.bookings.map((ev) => toApiEvent(ev)),
         clientName: dog.clientName,

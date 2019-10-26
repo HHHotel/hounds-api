@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import * as packjson from "../package.json";
 import * as HHH from "./types/HHHTypes";
 import * as API from "./types/HHHApiTypes";
@@ -68,8 +68,7 @@ export async function findEvents(eventText: string, auth: HHH.IHoundAuth) {
         },
     };
 
-    const response = await axios.get("/api/find", getRequestConfig(auth, requestConfig));
-    return response.data;
+    return axios.get("/api/find", getRequestConfig(auth, requestConfig));
 }
 
 export async function removeEvent(eventId: string, auth: HHH.IHoundAuth) {
@@ -81,11 +80,11 @@ export async function removeDog(dogId: string, auth: HHH.IHoundAuth) {
 }
 
 export async function editDog(dogProfile: API.IHoundAPIDog, auth: HHH.IHoundAuth) {
-    axios.put("/api/dogs", dogProfile, getRequestConfig(auth));
+    return axios.put("/api/dogs", dogProfile, getRequestConfig(auth));
 }
 
 export async function retrieveDog(dogId: string, auth: HHH.IHoundAuth) {
-    const response = await axios.get("/api/dogs/" + dogId);
+    const response = await axios.get("/api/dogs/" + dogId, getRequestConfig(auth));
     const dog = response.data as HHH.IHoundDog;
     for (const booking of dog.bookings) {
         booking.startDate = new Date(booking.startDate.valueOf());
