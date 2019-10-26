@@ -10,7 +10,7 @@ export interface IHoundAuth {
     token: string,
 }
 
-export interface ISchedulerEvent {
+export interface IHoundEvent {
     startDate: Date;
     endDate: Date;
     type: string;
@@ -18,23 +18,17 @@ export interface ISchedulerEvent {
     id: string;
 }
 
-export interface ISchedulerBooking extends ISchedulerEvent {
+export interface IHoundBooking extends IHoundEvent {
     dogName: string;
     clientName: string;
     dogId: string;
 }
 
-export interface ISchedulerUser {
-    username: string;
-    token: string;
-    permissions: number;
-}
-
-export interface ISchedulerDog {
+export interface IHoundDog {
     name: string;
     clientName: string;
     id: string;
-    bookings: ISchedulerEvent[];
+    bookings: IHoundEvent[];
 }
 
 export interface ISQLDog {

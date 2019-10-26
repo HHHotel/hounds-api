@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import * as packjson from "../package.json";
 import * as HHH from "./types/HHHTypes";
 import * as API from "./types/HHHApiTypes";
@@ -49,14 +49,14 @@ export async function getWeek(weekStart: Date, auth: HHH.IHoundAuth) {
         },
     };
     const response = await axios.get("/api/week", getRequestConfig(auth, requestConfig));
-    return he.formatEventData(weekStart, response.data as API.ISchedulerApiBooking[]);
+    return he.formatEventData(weekStart, response.data as API.IHoundAPIBooking[]);
 }
 
-export async function addDog(dog: API.ISchedulerApiDog, auth: HHH.IHoundAuth) {
+export async function addDog(dog: API.IHoundAPIDog, auth: HHH.IHoundAuth) {
     return axios.post("/api/dogs", dog, getRequestConfig(auth));
 }
 
-export async function addEvent(event: HHH.ISchedulerEvent, auth: HHH.IHoundAuth) {
+export async function addEvent(event: HHH.IHoundEvent, auth: HHH.IHoundAuth) {
     const newEvent = he.toApiEvent(event);
     return axios.post("/api/events", newEvent, getRequestConfig(auth));
 }
@@ -68,8 +68,7 @@ export async function findEvents(eventText: string, auth: HHH.IHoundAuth) {
         },
     };
 
-    const response = await axios.get("/api/find", getRequestConfig(auth, requestConfig));
-    return response.data;
+    return axios.get("/api/find", getRequestConfig(auth, requestConfig));
 }
 
 export async function removeEvent(eventId: string, auth: HHH.IHoundAuth) {
@@ -80,13 +79,13 @@ export async function removeDog(dogId: string, auth: HHH.IHoundAuth) {
     return axios.delete("/api/dogs/" + dogId, getRequestConfig(auth));
 }
 
-export async function editDog(dogProfile: API.ISchedulerApiDog, auth: HHH.IHoundAuth) {
-    axios.put("/api/dogs", dogProfile, getRequestConfig(auth));
+export async function editDog(dogProfile: API.IHoundAPIDog, auth: HHH.IHoundAuth) {
+    return axios.put("/api/dogs", dogProfile, getRequestConfig(auth));
 }
 
 export async function retrieveDog(dogId: string, auth: HHH.IHoundAuth) {
-    const response = await axios.get("/api/dogs/" + dogId);
-    const dog = response.data as HHH.ISchedulerDog;
+    const response = await axios.get("/api/dogs/" + dogId, getRequestConfig(auth));
+    const dog = response.data as HHH.IHoundDog;
     for (const booking of dog.bookings) {
         booking.startDate = new Date(booking.startDate.valueOf());
         booking.endDate = new Date(booking.endDate.valueOf());

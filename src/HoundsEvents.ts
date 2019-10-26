@@ -2,7 +2,7 @@ import * as HHH from "./types/HHHTypes";
 import * as API from "./types/HHHApiTypes";
 import DEFAULT from "./default";
 
-export function toApiEvent(event: HHH.ISchedulerEvent): API.ISchedulerApiEvent {
+export function toApiEvent(event: HHH.IHoundEvent): API.IHoundAPIEvent {
     return {
         startDate: event.startDate.valueOf(),
         endDate: event.endDate.valueOf(),
@@ -13,7 +13,7 @@ export function toApiEvent(event: HHH.ISchedulerEvent): API.ISchedulerApiEvent {
     };
 }
 
-export function toApiBooking(booking: HHH.ISchedulerBooking): API.ISchedulerApiBooking {
+export function toApiBooking(booking: HHH.IHoundBooking): API.IHoundAPIBooking {
     return {
         dogId: booking.dogId,
         startDate: booking.startDate.valueOf(),
@@ -27,7 +27,7 @@ export function toApiBooking(booking: HHH.ISchedulerBooking): API.ISchedulerApiB
     };
 }
 
-export function toApiDog(dog: HHH.ISchedulerDog): API.ISchedulerApiDog {
+export function toApiDog(dog: HHH.IHoundDog): API.IHoundAPIDog {
     return {
         bookings: dog.bookings.map((ev) => toApiEvent(ev)),
         clientName: dog.clientName,
@@ -36,7 +36,7 @@ export function toApiDog(dog: HHH.ISchedulerDog): API.ISchedulerApiDog {
     };
 }
 
-export function fromApiBooking(event: API.ISchedulerApiBooking): HHH.ISchedulerBooking {
+export function fromApiBooking(event: API.IHoundAPIBooking): HHH.IHoundBooking {
     return {
         startDate: new Date(event.startDate),
         endDate: new Date(event.endDate),
@@ -49,7 +49,7 @@ export function fromApiBooking(event: API.ISchedulerApiBooking): HHH.ISchedulerB
     };
 }
 
-export function fromApiEvent(event: API.ISchedulerApiEvent): HHH.ISchedulerEvent {
+export function fromApiEvent(event: API.IHoundAPIEvent): HHH.IHoundEvent {
     return {
         startDate: new Date(event.startDate),
         endDate: new Date(event.endDate),
@@ -59,16 +59,16 @@ export function fromApiEvent(event: API.ISchedulerApiEvent): HHH.ISchedulerEvent
     };
 }
 
-export function formatEventData(weekStart: Date, serverEventResponse: API.ISchedulerApiBooking[]): HHH.ISchedulerEvent[][] {
-    const events: HHH.ISchedulerEvent[][] = [];
+export function formatEventData(weekStart: Date, serverEventResponse: API.IHoundAPIBooking[]): HHH.IHoundEvent[][] {
+    const events: HHH.IHoundEvent[][] = [];
 
     // Init events out array
     for (let i = 0; i < 7; i++) {
         events[i] = [];
     }
 
-    function getScheduleEvent(event: HHH.ISchedulerBooking, index: number): HHH.ISchedulerEvent {
-        const record: HHH.ISchedulerEvent = {
+    function getScheduleEvent(event: HHH.IHoundBooking, index: number): HHH.IHoundEvent {
+        const record: HHH.IHoundEvent = {
             startDate: event.startDate,
             endDate: event.endDate,
             type: event.type,
