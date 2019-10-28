@@ -1,0 +1,37 @@
+{
+    "name": "@mjrochford/hounds-ts",
+    "version": "0.3.2",
+    "description": "Module to interact with the HHH Hounds API",
+    "main": "./lib/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "tslint --project .",
+        "hnds": "node ./lib/bin/hnds.js",
+        "build": "tsc"
+    },
+    "bin": {
+        "hnds": "./lib/bin/hnds.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HHHotel/hounds-ts.git"
+    },
+    "author": "Matt Rochford",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/HHHotel/hounds-ts/issues"
+    },
+    "homepage": "https://github.com/HHHotel/hounds-ts#readme",
+    "devDependencies": {
+        "@types/node": "^12.11.7",
+        "tslint": "^5.20.0",
+        "typescript": "^3.6.4"
+    },
+    "dependencies": {
+        "axios": "^0.19.0",
+        "date-fns": "^2.6.0"
+    },
+    "files": [
+        "./lib/**/*"
+    ]
+}

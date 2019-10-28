@@ -4,7 +4,7 @@
         "module": "commonjs",
         "declaration": true,
         "lib": ["es2015", "dom"],
-        "outDir": "./lib",
+        "outDir": "./dist",
         "allowJs": false,
         "resolveJsonModule": true,
         "esModuleInterop": true,
