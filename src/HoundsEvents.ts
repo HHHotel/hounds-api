@@ -1,6 +1,6 @@
 import * as HHH from "./types/HHHTypes";
 import * as API from "./types/HHHApiTypes";
-import DEFAULT from "./default";
+import { DEFAULT } from "./default";
 
 export function toApiEvent(event: HHH.IHoundEvent): API.IHoundAPIEvent {
     return {
@@ -59,45 +59,13 @@ export function fromApiEvent(event: API.IHoundAPIEvent): HHH.IHoundEvent {
     };
 }
 
-export function formatEventData(weekStart: Date, serverEventResponse: API.IHoundAPIBooking[]): HHH.IHoundEvent[][] {
-    const events: HHH.IHoundEvent[][] = [];
+export function formatEventData(weekStart: Date, serverEventResponse: API.IHoundAPIBooking[]): HHH.IScheduleEvent[][] {
+
+    const events: HHH.IScheduleEvent[][] = [];
 
     // Init events out array
     for (let i = 0; i < 7; i++) {
         events[i] = [];
-    }
-
-    function getScheduleEvent(event: HHH.IHoundBooking, index: number): HHH.IHoundEvent {
-        const record: HHH.IHoundEvent = {
-            startDate: event.startDate,
-            endDate: event.endDate,
-            type: event.type,
-            text: event.text,
-            id: event.dogId ? event.dogId : event.id,
-        };
-
-        // event is not a boarding no need to do anything special
-        if (record.type !== DEFAULT.CONSTANTS.BOARDING) {
-            return record;
-        }
-
-        const currDate = new Date(weekStart.valueOf());
-        currDate.setDate(currDate.getDate() + index);
-
-        // Switch on the day of the current week
-        switch (currDate.toDateString()) {
-            case (record.startDate.toDateString()): // Record should be an arrival
-                record.type = DEFAULT.CONSTANTS.ARRIVING;
-                break;
-            case (record.endDate.toDateString()): // Record should be a departure
-                record.type = DEFAULT.CONSTANTS.DEPARTING;
-                break;
-            default: // Record should be boarding
-                record.type = DEFAULT.CONSTANTS.BOARDING;
-                break;
-        }
-
-        return record;
     }
 
     for (const responseEvent of serverEventResponse) {
@@ -127,5 +95,40 @@ export function formatEventData(weekStart: Date, serverEventResponse: API.IHound
             events[startDay].push(getScheduleEvent(event, startDay));
         }
     }
+
     return events;
+
+    function getScheduleEvent(event: HHH.IHoundBooking, index: number): HHH.IScheduleEvent {
+        const record: HHH.IScheduleEvent = {
+            ...event,
+        };
+
+        // event is not a boarding no need to do anything special
+        if (record.type !== DEFAULT.CONSTANTS.BOARDING) {
+            return record;
+        }
+
+        const currDate = new Date(weekStart.valueOf());
+        currDate.setDate(currDate.getDate() + index);
+
+        // Switch on the day of the current week
+        switch (currDate.toDateString()) {
+            case (record.startDate && record.startDate.toDateString()): // Record should be an arrival
+                record.endDate = record.startDate;
+                record.type = DEFAULT.CONSTANTS.ARRIVING;
+                break;
+            case (record.endDate && record.endDate.toDateString()): // Record should be a departure
+                record.startDate = record.endDate;
+                record.type = DEFAULT.CONSTANTS.DEPARTING;
+                break;
+            default: // Record should be boarding
+                record.startDate = undefined;
+                record.endDate = undefined;
+                record.type = DEFAULT.CONSTANTS.BOARDING;
+                break;
+        }
+
+        return record;
+    }
+
 }

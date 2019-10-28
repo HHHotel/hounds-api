@@ -42,6 +42,14 @@ export async function login(username: string, password: string) {
     return response.data;
 }
 
+export async function checkAuthentication(auth: HHH.IHoundAuth): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        axios.post("/login", auth, getRequestConfig(auth))
+            .then(() => resolve(true) )
+            .catch(() => resolve(false) );
+    });
+}
+
 export async function getWeek(weekStart: Date, auth: HHH.IHoundAuth) {
     const requestConfig = {
         params: {

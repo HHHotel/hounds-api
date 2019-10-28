@@ -7,9 +7,19 @@
         "outDir": "./lib",
         "allowJs": false,
         "resolveJsonModule": true,
+        "esModuleInterop": true,
         "moduleResolution": "node",
-        "strict": true
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "pretty": true,
+        "sourceMap": true,
+        "strict": true,
+
     },
-    "include": ["src", "index.ts"],
+    "include": ["src", "bin", "index.ts"],
     "exclude": ["node_modules", "**/__tests__/*"],
 }

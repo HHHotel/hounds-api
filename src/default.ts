@@ -1,6 +1,6 @@
 import * as packjson from "../package.json";
 
-export default {
+export const DEFAULT = {
     CONSTANTS: {
         ARRIVING: "arriving",
         DEPARTING: "departing",
