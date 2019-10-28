@@ -10,7 +10,7 @@
     "build": "tsc"
   },
   "bin": {
-    "hnds": "./lib/bin/hnds.js"
+    "hnds": "./dist/bin/hnds.js"
   },
   "repository": {
     "type": "git",
