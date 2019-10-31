@@ -6,11 +6,10 @@ import * as HHH from "../src/types/HHHTypes";
 import * as dates from "date-fns";
 import fs = require("fs");
 
-const HOUND_BASE_URL = "http://10.0.0.247:8080";
+const HOUNDS_API_URL = "http://localhost:8080";
+const HOUNDS_API_VERSION = "0.3.2";
 
 async function main() {
-    hounds.axiosConfig.baseURL = HOUND_BASE_URL;
-
     let auth: HHH.IHoundAuth;
 
     if (fs.existsSync("credentials")) {
@@ -19,10 +18,16 @@ async function main() {
         auth = await login();
     }
 
+    const houndsConfig = new hounds.HoundsConfig({
+        apiURL: "http://localhost:8080",
+        apiVersion: "0.3.2",
+        apiAuth: auth,
+    });
+
     const weekStart = new Date(new Date().toLocaleDateString());
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
 
-    const week = await hounds.getWeek(weekStart, auth);
+    const week = await hounds.getWeek(weekStart, houndsConfig);
 
     const currDay = new Date(weekStart.valueOf());
 
@@ -42,7 +47,7 @@ async function login() {
     const username = await prompt("username? ");
     const password = await prompt("password? ");
 
-    const auth = await hounds.login(username, password);
+    const auth = await hounds.login(username, password, HOUNDS_API_URL);
     fs.writeFileSync("credentials", auth.username + ":" + auth.token);
     return auth;
 }
@@ -55,7 +60,13 @@ async function loadCredentials(path: string, sep?: string) {
         token: data[1],
     };
 
-    const validAuth = await hounds.checkAuthentication(auth);
+    const houndsConfig = new hounds.HoundsConfig({
+        apiURL: HOUNDS_API_URL,
+        apiVersion: HOUNDS_API_VERSION,
+        apiAuth: auth,
+    });
+
+    const validAuth = await hounds.checkAuthentication(houndsConfig);
 
     if (!validAuth) {
         auth = await login();

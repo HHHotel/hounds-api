@@ -3,7 +3,9 @@
         "target": "es5",
         "module": "commonjs",
         "declaration": true,
+        "typeRoots": ["./src/types"],
         "lib": ["es2015", "dom"],
+        "types": ["node"],
         "outDir": "./dist",
         "allowJs": false,
         "resolveJsonModule": true,
@@ -18,8 +20,7 @@
         "pretty": true,
         "sourceMap": true,
         "strict": true,
-
     },
     "include": ["src", "bin", "index.ts"],
-    "exclude": ["node_modules", "**/__tests__/*"],
+    "exclude": ["node_modules"],
 }

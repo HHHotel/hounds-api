@@ -1,6 +1,18 @@
-import * as packjson from "../package.json";
+interface IDefaults {
+    CONSTANTS: {
+        ARRIVING: string;
+        BOARDING: string,
+        DEPARTING: string,
+        DAYCARE: string,
+        DOG: string,
+        EVENT_TYPES: string[],
+        USER_CONSTANT: {
+            [key: string]: number,
+        },
+    };
+}
 
-export const DEFAULT = {
+export const DEFAULT: IDefaults = {
     CONSTANTS: {
         ARRIVING: "arriving",
         DEPARTING: "departing",
@@ -23,6 +35,4 @@ export const DEFAULT = {
             ["Admin"]: 10,
         },
     },
-    MAIN_PKG: "Hounds.App",
-    VERSION: packjson.version,
 };
