@@ -1,6 +1,6 @@
 {
     "name": "@happyhoundhotel/hounds-ts",
-    "version": "0.3.11",
+    "version": "0.3.12",
     "description": "Module to interact with the HHH Hounds API",
     "main": "dist/index.js",
     "scripts": {
