@@ -34,6 +34,8 @@ async function main() {
     for (let i = 0; i < 7; i++) {
         console.log(dates.format(currDay, "MMM d"));
         console.log("--------------------");
+        week[i].sort(houndfmt.compareScheduleEvents);
+
         for (const event of week[i]) {
             console.log(houndfmt.getTimePrepend(event), event.text);
         }

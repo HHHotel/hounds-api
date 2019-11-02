@@ -24,6 +24,7 @@ export interface IScheduleEvent {
     type: string;
     text: string;
     id: string;
+    dogId: string;
 }
 
 export interface IHoundBooking extends IHoundEvent {
