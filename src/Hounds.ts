@@ -107,10 +107,10 @@ export async function retrieveDog(dogId: string, config: HoundsConfig) {
     return dog;
 }
 
-export async function addUser(username: string, password: string, permissionLevel: string, config: HoundsConfig) {
+export async function addUser(username: string, password: string, permissions: number, config: HoundsConfig) {
     const user = {
         password,
-        permissions: permissionLevel,
+        permissions,
         username,
     };
 
