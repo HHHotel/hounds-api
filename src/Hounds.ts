@@ -69,8 +69,8 @@ export async function getWeek(weekStart: Date, config: HoundsConfig) {
 }
 
 export async function addDog(dog: HHH.IHoundDog, config: HoundsConfig) {
-    const newDog = he.toApiDog(dog);
-    return axios.post("/api/dogs", newDog, config.newRequest());
+    const apiDog = he.toApiDog(dog);
+    return axios.post("/api/dogs", apiDog, config.newRequest());
 }
 
 export async function addEvent(event: HHH.IHoundEvent, config: HoundsConfig) {
@@ -91,8 +91,8 @@ export async function removeDog(dogId: string, config: HoundsConfig) {
 }
 
 export async function editDog(dogProfile: HHH.IHoundDog, config: HoundsConfig) {
-    const newDog = he.toApiDog(dogProfile);
-    return axios.put("/api/dogs", newDog, config.newRequest());
+    const apiDog = he.toApiDog(dogProfile);
+    return axios.put("/api/dogs", apiDog, config.newRequest());
 }
 
 export async function retrieveDog(dogId: string, config: HoundsConfig) {

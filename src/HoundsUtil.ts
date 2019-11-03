@@ -7,7 +7,9 @@ export function getTimePrepend(event: HHH.IScheduleEvent) {
         return "";
     }
 
-    if (event.startDate.getHours() >= 12 === event.endDate.getHours() >= 12) {
+    if (dates.compareAsc(event.startDate, event.endDate) === 0) {
+        return "(" + dates.format(event.startDate, "h:mm a") + ")";
+    } else if (event.startDate.getHours() >= 12 === event.endDate.getHours() >= 12) {
         const start = dates.format(event.startDate, "h:mm");
         const end = dates.format(event.endDate, "h:mm a");
         return "(" + start + " - " + end + ")";
