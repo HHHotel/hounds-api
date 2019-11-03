@@ -18,6 +18,15 @@ export interface IHoundEvent {
     id: string;
 }
 
+export interface IScheduleEvent {
+    startDate?: Date;
+    endDate?: Date;
+    type: string;
+    text: string;
+    id: string;
+    dogId: string;
+}
+
 export interface IHoundBooking extends IHoundEvent {
     dogName: string;
     clientName: string;
