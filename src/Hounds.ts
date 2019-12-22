@@ -87,6 +87,14 @@ export async function removeEvent(eventId: string, config: HoundsConfig) {
 }
 
 export async function removeDog(dogId: string, config: HoundsConfig) {
+    return axios.delete("/api/dogs/" + dogId, config.newRequest({option: "force"}));
+}
+
+export async function deactivateDog(dogId: string, config: HoundsConfig) {
+    return axios.delete("/api/dogs/" + dogId, config.newRequest({option: "reactivate"}));
+}
+
+export async function reactivateDog(dogId: string, config: HoundsConfig) {
     return axios.delete("/api/dogs/" + dogId, config.newRequest());
 }
 
