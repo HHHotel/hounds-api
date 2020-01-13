@@ -22,6 +22,7 @@ export const DEFAULT: IDefaults = {
         EVENT_TYPES: [
             "arriving",
             "departing",
+            "taxi",
             "daycare",
             "grooming",
             "visit",
