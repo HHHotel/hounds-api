@@ -21,14 +21,13 @@ export function toApiBooking(booking: HHH.IHoundBooking): API.IHoundAPIBooking {
         id: booking.id,
         text: booking.text,
         type: booking.type,
-        dogName: booking.dogName,
-        clientName: booking.clientName,
         desc: "",
     };
 }
 
 export function toApiDog(dog: HHH.IHoundDog): API.IHoundAPIDog {
     return {
+        activeClient: dog.activeClient,
         bookings: dog.bookings.map((ev) => toApiEvent(ev)),
         clientName: dog.clientName,
         id: dog.id,
@@ -42,8 +41,6 @@ export function fromApiBooking(event: API.IHoundAPIBooking): HHH.IHoundBooking {
         endDate: new Date(event.endDate),
         id: event.id,
         dogId: event.dogId,
-        dogName: event.dogName,
-        clientName: event.clientName,
         type: event.type,
         text: event.text,
     };
