@@ -1,4 +1,5 @@
 export interface IHoundAPIDog {
+    activeClient: boolean;
     name: string;
     clientName: string;
     id: string;
@@ -6,8 +7,6 @@ export interface IHoundAPIDog {
 }
 
 export interface IHoundAPIBooking extends IHoundAPIEvent {
-    dogName: string;
-    clientName: string;
     dogId: string;
 }
 

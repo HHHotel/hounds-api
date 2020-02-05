@@ -1,13 +1,13 @@
 export interface IHoundUser {
-    username: string,
-    token: string,
-    permissions: number,
-    id: number,
+    username: string;
+    token: string;
+    permissions: number;
+    id: number;
 }
 
 export interface IHoundAuth {
-    username: string,
-    token: string,
+    username: string;
+    token: string;
 }
 
 export interface IHoundEvent {
@@ -28,12 +28,11 @@ export interface IScheduleEvent {
 }
 
 export interface IHoundBooking extends IHoundEvent {
-    dogName: string;
-    clientName: string;
     dogId: string;
 }
 
 export interface IHoundDog {
+    activeClient: boolean;
     name: string;
     clientName: string;
     id: string;
