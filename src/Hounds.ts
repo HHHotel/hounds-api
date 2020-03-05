@@ -9,35 +9,20 @@ export interface IHoundsConfig {
     apiAuth: HHH.IHoundAuth;
 }
 
-export class HoundsConfig {
-
-    apiURL: string;
-    apiVersion: string;
-    apiAuth: HHH.IHoundAuth;
-
-    constructor(opts: IHoundsConfig) {
-        this.apiAuth = opts.apiAuth;
-        this.apiURL = opts.apiURL;
-        this.apiVersion = opts.apiVersion;
-    }
-
-    // tslint:disable-next-line: no-any
-    newRequest(params?: any, data?: any): AxiosRequestConfig {
-        return {
-            baseURL: this.apiURL,
-            headers: {
-                version: this.apiVersion,
-            },
-            params: {
-                ...this.apiAuth,
-                ...params,
-            },
-            data: {
-                ...data,
-            },
-        };
-    }
-
+function createNewRequest(auth: IHoundsConfig, params?: any, data?: any): AxiosRequestConfig {
+    return {
+        baseURL: auth.apiURL,
+        headers: {
+            version: auth.apiVersion,
+        },
+        params: {
+            ...auth.apiAuth,
+            ...params,
+        },
+        data: {
+            ...data,
+        },
+    };
 }
 
 export async function login(username: string, password: string, url: string) {
@@ -55,56 +40,56 @@ export async function login(username: string, password: string, url: string) {
     return response.data;
 }
 
-export async function checkAuthentication(config: HoundsConfig): Promise<boolean> {
+export async function checkAuthentication(config: IHoundsConfig): Promise<boolean> {
     return new Promise((resolve, reject) => {
-        axios.post("/login", {}, config.newRequest())
-            .then(() => resolve(true))
-            .catch(() => resolve(false));
+        axios.post("/login", {}, createNewRequest(config))
+        .then(() => resolve(true))
+        .catch(() => resolve(false));
     });
 }
 
-export async function getWeek(weekStart: Date, config: HoundsConfig) {
-    const response = await axios.get("/api/week", config.newRequest({date: weekStart}));
+export async function getWeek(weekStart: Date, config: IHoundsConfig) {
+    const response = await axios.get("/api/week", createNewRequest(config, {date: weekStart}));
     return he.formatEventData(weekStart, response.data as API.IHoundAPIBooking[]);
 }
 
-export async function addDog(dog: HHH.IHoundDog, config: HoundsConfig) {
+export async function addDog(dog: HHH.IHoundDog, config: IHoundsConfig) {
     const apiDog = he.toApiDog(dog);
-    return axios.post("/api/dogs", apiDog, config.newRequest());
+    return axios.post("/api/dogs", apiDog, createNewRequest(config));
 }
 
-export async function addEvent(event: HHH.IHoundEvent, config: HoundsConfig) {
+export async function addEvent(event: HHH.IHoundEvent, config: IHoundsConfig) {
     const newEvent = he.toApiEvent(event);
-    return axios.post("/api/events", newEvent, config.newRequest());
+    return axios.post("/api/events", newEvent, createNewRequest(config));
 }
 
-export async function findEvents(eventText: string, config: HoundsConfig) {
-    return axios.get("/api/find", config.newRequest({searchText: eventText}));
+export async function findEvents(eventText: string, config: IHoundsConfig) {
+    return axios.get("/api/find", createNewRequest(config, {searchText: eventText}));
 }
 
-export async function removeEvent(eventId: string, config: HoundsConfig) {
-    return axios.delete("/api/events/" + eventId, config.newRequest());
+export async function removeEvent(eventId: string, config: IHoundsConfig) {
+    return axios.delete("/api/events/" + eventId, createNewRequest(config));
 }
 
-export async function removeDog(dogId: string, config: HoundsConfig) {
-    return axios.delete("/api/dogs/" + dogId, config.newRequest({option: "force"}));
+export async function removeDog(dogId: string, config: IHoundsConfig) {
+    return axios.delete("/api/dogs/" + dogId, createNewRequest(config, {option: "force"}));
 }
 
-export async function reactivateDog(dogId: string, config: HoundsConfig) {
-    return axios.delete("/api/dogs/" + dogId, config.newRequest({option: "reactivate"}));
+export async function reactivateDog(dogId: string, config: IHoundsConfig) {
+    return axios.delete("/api/dogs/" + dogId, createNewRequest(config, {option: "reactivate"}));
 }
 
-export async function deactivateDog(dogId: string, config: HoundsConfig) {
-    return axios.delete("/api/dogs/" + dogId, config.newRequest());
+export async function deactivateDog(dogId: string, config: IHoundsConfig) {
+    return axios.delete("/api/dogs/" + dogId, createNewRequest(config));
 }
 
-export async function editDog(dogProfile: HHH.IHoundDog, config: HoundsConfig) {
+export async function editDog(dogProfile: HHH.IHoundDog, config: IHoundsConfig) {
     const apiDog = he.toApiDog(dogProfile);
-    return axios.put("/api/dogs", apiDog, config.newRequest());
+    return axios.put("/api/dogs", apiDog, createNewRequest(config));
 }
 
-export async function retrieveDog(dogId: string, config: HoundsConfig) {
-    const response = await axios.get("/api/dogs/" + dogId, config.newRequest());
+export async function retrieveDog(dogId: string, config: IHoundsConfig) {
+    const response = await axios.get("/api/dogs/" + dogId, createNewRequest(config));
     const dog = response.data as HHH.IHoundDog;
     for (const booking of dog.bookings) {
         booking.startDate = new Date(booking.startDate.valueOf());
@@ -115,26 +100,26 @@ export async function retrieveDog(dogId: string, config: HoundsConfig) {
     return dog;
 }
 
-export async function addUser(username: string, password: string, permissions: number, config: HoundsConfig) {
+export async function addUser(username: string, password: string, permissions: number, config: IHoundsConfig) {
     const user = {
         password,
         permissions,
         username,
     };
 
-    return axios.post("/api/users", user, config.newRequest());
+    return axios.post("/api/users", user, createNewRequest(config));
 }
 
-export async function deleteUser(username: string, config: HoundsConfig) {
-    return axios.delete("/api/users/" + username, config.newRequest());
+export async function deleteUser(username: string, config: IHoundsConfig) {
+    return axios.delete("/api/users/" + username, createNewRequest(config));
 }
 
-export async function changePassword(username: string, oldPassword: string, newPassword: string, config: HoundsConfig) {
+export async function changePassword(username: string, oldPassword: string, newPassword: string, config: IHoundsConfig) {
     const user = {
         newPassword,
         oldPassword,
         username,
     };
 
-    return axios.put("/api/user/password", user, config.newRequest());
+    return axios.put("/api/user/password", user, createNewRequest(config));
 }

@@ -6,8 +6,8 @@ import * as HHH from "../src/types/HHHTypes";
 import * as dates from "date-fns";
 import fs = require("fs");
 
-const HOUNDS_API_URL = "http://localhost:8080";
-const HOUNDS_API_VERSION = "0.3.2";
+const HOUNDS_API_URL = "https://hhh-scheduler-testing.herokuapp.com";
+const HOUNDS_API_VERSION = "0.3.4";
 
 async function main() {
     let auth: HHH.IHoundAuth;
@@ -18,11 +18,11 @@ async function main() {
         auth = await login();
     }
 
-    const houndsConfig = new hounds.HoundsConfig({
-        apiURL: "http://localhost:8080",
-        apiVersion: "0.3.2",
+    const houndsConfig: hounds.IHoundsConfig = {
+        apiURL: HOUNDS_API_URL,
+        apiVersion: HOUNDS_API_VERSION,
         apiAuth: auth,
-    });
+    };
 
     const weekStart = new Date(new Date().toLocaleDateString());
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
@@ -43,6 +43,9 @@ async function main() {
         currDay.setDate( currDay.getDate() + 1 );
         console.log();
     }
+
+    const response = await hounds.findEvents("Moose", houndsConfig);
+    console.log(response.data);
 }
 
 async function login() {
@@ -62,11 +65,11 @@ async function loadCredentials(path: string, sep?: string) {
         token: data[1],
     };
 
-    const houndsConfig = new hounds.HoundsConfig({
+    const houndsConfig: hounds.IHoundsConfig = {
         apiURL: HOUNDS_API_URL,
         apiVersion: HOUNDS_API_VERSION,
         apiAuth: auth,
-    });
+    };
 
     const validAuth = await hounds.checkAuthentication(houndsConfig);
 
